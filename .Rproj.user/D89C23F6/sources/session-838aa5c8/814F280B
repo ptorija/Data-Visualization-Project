@@ -1,0 +1,26 @@
+{
+    "id": "814F280B",
+    "path": "~/DataVisualizationProject/app.R",
+    "project_path": "app.R",
+    "type": "r_source",
+    "hash": "4150888482",
+    "contents": "",
+    "dirty": true,
+    "created": 1700752458379.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "40,21",
+        "scrollLine": "21"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1693006258,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1700752525698,
+    "read_only": false,
+    "read_only_alternatives": []
+}
