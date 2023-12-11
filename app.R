@@ -33,7 +33,6 @@ library(rnaturalearth)
 library(ggrepel)
 library(tidyr)
 
-setwd("C:/Users/34685/OneDrive/Documentos/DataVisualizationProject/")
 source("scripts/charts_functions.R")
 
 # Load Data
@@ -58,8 +57,8 @@ ui <- fluidPage(
   div(class = "panels-group",
       sidebarPanel(
         checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
-                           choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America", "Middle East"),
-                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America", "Middle East")),
+                           choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
+                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
         width = 3
       ),
       mainPanel(
@@ -90,7 +89,7 @@ ui <- fluidPage(
 # Define server
 server <- function(input, output) {
   
-  # Call the function to render the graph
+  # Call the function to render the steam graph
   output$steam <- renderPlot({
     create_steam_graph(input$steamRegionsSelector, data)
   })
@@ -100,9 +99,9 @@ server <- function(input, output) {
     create_map(input$mapYearSelector, data)
   })
   
-  # Call the function to render the graph
+  # Call the function to render the bubble graph
   output$bubble <- renderPlot({
-  create_bubble_chart(data)
+  create_bubble_chart(input$bubbleYearSelector, data)
   })
   
 }

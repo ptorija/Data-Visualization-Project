@@ -46,14 +46,14 @@ create_steam_graph <- function(selected_regions, data) {
   # Create a stream graph with ggplot2 using scaled values
   ggplot(df_long, aes(x = Year, y = Value, fill = Region)) +
     geom_area(position = "stack") +
-    labs(title = "Streamgraph Example", x = "Year", y = "Scaled Value") +
+    labs(x = "Year", y = "Scaled Value") +
     scale_fill_manual(values = scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region)))) +
     theme_minimal()
 }
 
 
 
-create_bubble_chart <- function(data) {
+create_bubble_chart <- function(year, data) {
   
   # Group by region and get mean generation
   generation_by_region <- data %>%
@@ -98,7 +98,7 @@ create_bubble_chart <- function(data) {
   ggplot(new_df, aes(x = Generation, y = Consumption, size = Capacity)) +
     geom_point(aes(color = Region), alpha = 0.7) +
     scale_size_continuous(range = c(3, 15)) +  # Adjust the range based on your preference
-    labs(title = "Bubble Chart Example", x = "Generation", y = "Consumption", size = "Capacity") +
+    labs(x = "Generation", y = "Consumption", size = "Capacity") +
     theme_minimal()
   
 }
