@@ -17,6 +17,9 @@ if (!requireNamespace("scales", quietly = TRUE)) {
 if (!requireNamespace("rnaturalearth", quietly = TRUE)) {
   install.packages("rnaturalearth")
 }
+if (!requireNamespace("rnaturalearthdata", quietly = TRUE)) {
+  install.packages("rnaturalearthdata")
+}
 if (!requireNamespace("ggrepel", quietly = TRUE)) {
   install.packages("ggrepel")
 }
@@ -30,6 +33,7 @@ library(dplyr)
 library(ggplot2)
 library(scales)
 library(rnaturalearth)
+library(rnaturalearthdata)
 library(ggrepel)
 library(tidyr)
 
@@ -68,7 +72,8 @@ ui <- fluidPage(
   div(class = "panels-group",
       sidebarPanel(
         selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
-        width = 2
+        width = 2,
+        
       ),
       mainPanel(
         plotOutput("map", width = "100%"),
@@ -77,7 +82,10 @@ ui <- fluidPage(
   div(class = "panels-group",
       sidebarPanel(
         selectInput("bubbleYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
-        width = 2
+        checkboxGroupInput("bubbleRegionsSelector", "Select regions to display:",
+                           choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
+                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
+        width = 3,
       ),
       mainPanel(
         plotOutput("bubble", width = "100%"),
@@ -101,7 +109,7 @@ server <- function(input, output) {
   
   # Call the function to render the bubble graph
   output$bubble <- renderPlot({
-  create_bubble_chart(input$bubbleYearSelector, data)
+  create_bubble_chart(input$bubbleRegionsSelector, data)
   })
   
 }
