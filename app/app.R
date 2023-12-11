@@ -75,16 +75,15 @@ ui <- fluidPage(
         plotOutput("map", width = "100%"),
       )
   ),
-  '
   div(class = "panels-group",
       sidebarPanel(
-        selectInput("steamYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
+        selectInput("bubbleYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
         width = 2
       ),
       mainPanel(
-        plotOutput("steam", width = "100%"),
+        plotOutput("bubble", width = "100%"),
       )
-  )'
+  )
 )
 
 
@@ -102,9 +101,9 @@ server <- function(input, output) {
   })
   
   # Call the function to render the graph
-  #output$steam <- renderPlot({
-  #  create_bubble_chart(data)
-  #})
+  output$bubble <- renderPlot({
+  create_bubble_chart(data)
+  })
   
 }
 
