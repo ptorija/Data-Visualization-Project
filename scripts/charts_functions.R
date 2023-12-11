@@ -23,7 +23,7 @@ create_map <- function(year, data) {
 
 
 
-create_steam_graph <- function(year, data) {
+create_steam_graph <- function(selected_regions, data) {
   
   # Group by region and get mean generation
   generation_by_region <- data %>%
@@ -39,16 +39,18 @@ create_steam_graph <- function(year, data) {
     pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>%
     mutate(Year = as.numeric(gsub("X", "", Year)))
   
-  regions_to_exclude <- c("North America")
+  # Filter only the selected regions
   df_long <- df_long %>%
-    filter(!Region %in% regions_to_exclude)
+    filter(Region %in% selected_regions)
   
   # Create a stream graph with ggplot2 using scaled values
   ggplot(df_long, aes(x = Year, y = Value, fill = Region)) +
     geom_area(position = "stack") +
     labs(title = "Streamgraph Example", x = "Year", y = "Scaled Value") +
+    scale_fill_manual(values = scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region)))) +
     theme_minimal()
 }
+
 
 
 create_bubble_chart <- function(data) {

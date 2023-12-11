@@ -57,6 +57,17 @@ ui <- fluidPage(
   div(class = "main-title", "Global Electricity Statistics"),
   div(class = "panels-group",
       sidebarPanel(
+        checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
+                           choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America", "Middle East"),
+                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America", "Middle East")),
+        width = 3
+      ),
+      mainPanel(
+        plotOutput("steam", width = "100%"),
+      )
+  ),
+  div(class = "panels-group",
+      sidebarPanel(
         selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
         width = 2
       ),
@@ -64,15 +75,7 @@ ui <- fluidPage(
         plotOutput("map", width = "100%"),
       )
   ),
-  div(class = "panels-group",
-      sidebarPanel(
-        selectInput("steamRegionsSelector", "Select regions to display:", seq("Africa")),
-        width = 2
-      ),
-      mainPanel(
-        plotOutput("steam", width = "100%"),
-      )
-  ),'
+  '
   div(class = "panels-group",
       sidebarPanel(
         selectInput("steamYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
@@ -88,14 +91,14 @@ ui <- fluidPage(
 # Define server
 server <- function(input, output) {
   
-  # Call the function to render the map
-  output$map <- renderPlot({
-    create_map(input$mapYearSelector, data)
-  })
-  
   # Call the function to render the graph
   output$steam <- renderPlot({
     create_steam_graph(input$steamRegionsSelector, data)
+  })
+  
+  # Call the function to render the map
+  output$map <- renderPlot({
+    create_map(input$mapYearSelector, data)
   })
   
   # Call the function to render the graph
