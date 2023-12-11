@@ -1,14 +1,109 @@
-library(shiny)
+# Install and load required packages
+if (!requireNamespace("shiny", quietly = TRUE)) {
+  install.packages("shiny")
+}
+if (!requireNamespace("leaflet", quietly = TRUE)) {
+  install.packages("leaflet")
+}
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  install.packages("dplyr")
+}
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+if (!requireNamespace("scales", quietly = TRUE)) {
+  install.packages("scales")
+}
+if (!requireNamespace("rnaturalearth", quietly = TRUE)) {
+  install.packages("rnaturalearth")
+}
+if (!requireNamespace("ggrepel", quietly = TRUE)) {
+  install.packages("ggrepel")
+}
+if (!requireNamespace("tidyr", quietly = TRUE)) {
+  install.packages("tidyr")
+}
 
-# Define UI ----
+library(shiny)
+library(leaflet)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(rnaturalearth)
+library(ggrepel)
+library(tidyr)
+
+setwd("C:/Users/34685/OneDrive/Documentos/DataVisualizationProject/")
+source("scripts/charts_functions.R")
+
+# Load Data
+data <- read.csv("data/Global Electricity Statistics.csv", header = TRUE)
+
 ui <- fluidPage(
-  
+  tags$head(
+    tags$style(HTML("
+      .main-title {
+        text-align: center;
+        font-size: 34px;
+        font-weight: bold;
+        margin-bottom: 50px;
+      }
+      .panels-group {
+        display: flex;
+        justify-content: center;
+      }
+      "))
+  ),
+  div(class = "main-title", "Global Electricity Statistics"),
+  div(class = "panels-group",
+      sidebarPanel(
+        selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
+        width = 2
+      ),
+      mainPanel(
+        plotOutput("map", width = "100%"),
+      )
+  ),
+  div(class = "panels-group",
+      sidebarPanel(
+        selectInput("steamRegionsSelector", "Select regions to display:", seq("Africa")),
+        width = 2
+      ),
+      mainPanel(
+        plotOutput("steam", width = "100%"),
+      )
+  ),'
+  div(class = "panels-group",
+      sidebarPanel(
+        selectInput("steamYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
+        width = 2
+      ),
+      mainPanel(
+        plotOutput("steam", width = "100%"),
+      )
+  )'
 )
 
-# Define server logic ----
+
+# Define server
 server <- function(input, output) {
+  
+  # Call the function to render the map
+  output$map <- renderPlot({
+    create_map(input$mapYearSelector, data)
+  })
+  
+  # Call the function to render the graph
+  output$steam <- renderPlot({
+    create_steam_graph(input$steamRegionsSelector, data)
+  })
+  
+  # Call the function to render the graph
+  #output$steam <- renderPlot({
+  #  create_bubble_chart(data)
+  #})
   
 }
 
-# Run the app ----
+# Run the Shiny app
 shinyApp(ui = ui, server = server)
