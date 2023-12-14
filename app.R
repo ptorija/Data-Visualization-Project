@@ -93,7 +93,6 @@ ui <- fluidPage(
   )
 )
 
-
 # Define server
 server <- function(input, output) {
   
@@ -109,9 +108,8 @@ server <- function(input, output) {
   
   # Call the function to render the bubble graph
   output$bubble <- renderPlot({
-  create_bubble_chart(input$bubbleRegionsSelector, data)
+  create_bubble_chart(input$bubbleRegionsSelector, data, input$bubbleYearSelector)
   })
-  
 }
 
 # Run the Shiny app
