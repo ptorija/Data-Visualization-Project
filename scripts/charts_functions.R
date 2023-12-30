@@ -14,8 +14,10 @@ create_map <- function(year, data) {
     scale_fill_gradient(label = scales::comma, name = 'Net generation') +
     theme(
       plot.margin = margin(t=0, r=0, b=0, l=0),
-      panel.border = element_rect(color = "black", fill = NA, size = 1))
+      panel.background = element_rect(fill = "white")  # Set the background color to white
+    )
 }
+
 
 create_steam_graph <- function(selected_regions, data) {
   # Group by region and get mean generation
@@ -41,7 +43,11 @@ create_steam_graph <- function(selected_regions, data) {
     geom_area(position = "stack") +
     labs(x = "Year", y = "Scaled Value") +
     scale_fill_manual(values = scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region)))) +
-    theme_minimal()
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(margin = margin(b = 10)),
+      axis.text.y = element_text(margin = margin(l = 10))
+    )
 }
 
 create_bubble_chart <- function(selected_regions, data, column_name) {
@@ -80,7 +86,11 @@ create_bubble_chart <- function(selected_regions, data, column_name) {
   # Create the bubble chart
   ggplot(new_df, aes(x = Generation, y = Consumption, size = Capacity)) +
     geom_point(aes(color = Region), alpha = 0.7) +
-    scale_size_continuous(range = c(3, 15)) +  # Adjust the range based on your preference
+    scale_size_continuous(range = c(3, 15)) +  
     labs(x = "Generation", y = "Consumption", size = "Capacity") +
-    theme_minimal()
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(margin = margin(b = 10)),
+      axis.text.y = element_text(margin = margin(l = 10))
+    )
 }

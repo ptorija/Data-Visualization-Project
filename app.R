@@ -45,15 +45,21 @@ data <- read.csv("data/Global Electricity Statistics.csv", header = TRUE)
 ui <- fluidPage(
   tags$head(
     tags$style(HTML("
+      body {
+        background-color: #EBEBEB; 
+      }
       .main-title {
         text-align: center;
-        font-size: 34px;
+        font-size: 45px;
         font-weight: bold;
-        margin-bottom: 50px;
+        margin-bottom: 100px;
+        margin-top: 50px;
+        color: #2674D8;
       }
       .panels-group {
         display: flex;
         justify-content: center;
+        margin-bottom: 100px;
       }
       "))
   ),
@@ -63,20 +69,22 @@ ui <- fluidPage(
         checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
                            choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
                            selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
-        width = 3
+        width = 2.5
       ),
       mainPanel(
         plotOutput("steam", width = "100%"),
+        style = "margin-left: 50px;"
       )
   ),
   div(class = "panels-group",
       sidebarPanel(
         selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
-        width = 2,
+        width = 2.5,
         
       ),
       mainPanel(
         plotOutput("map", width = "100%"),
+        style = "margin-left: 50px;"
       )
   ),
   div(class = "panels-group",
@@ -85,10 +93,11 @@ ui <- fluidPage(
         checkboxGroupInput("bubbleRegionsSelector", "Select regions to display:",
                            choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
                            selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
-        width = 3,
+        width = 2.5,
       ),
       mainPanel(
         plotOutput("bubble", width = "100%"),
+        style = "margin-left: 50px;"
       )
   )
 )
