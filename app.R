@@ -72,7 +72,7 @@ ui <- navbarPage(
       checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
                          choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
                          selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
-      plotOutput("steam", width = "100%"),
+      plotOutput("steam", width = "75%"),
       style = "margin-left: 50px;"
     )
   ),
@@ -82,7 +82,7 @@ ui <- navbarPage(
     splitLayout(
       cellWidths = c("25%", "75%"),
       selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
-      plotOutput("map", width = "100%"),
+      plotOutput("map", width = "75%"),
       style = "margin-left: 50px;"
     )
   ),
@@ -97,7 +97,7 @@ ui <- navbarPage(
                            choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
                            selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"))
       ),
-      plotOutput("bubble", width = "100%"),
+      plotOutput("bubble", width = "75%"),
       style = "margin-left: 50px;"
     )
   )

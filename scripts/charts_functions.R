@@ -34,11 +34,14 @@ create_steam_graph <- function(selected_regions, data) {
   df_long <- df_long %>%
     filter(Region %in% selected_regions)
   
+  # Assign specific colors to each region
+  region_colors <- setNames(scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region))), unique(generation_by_region$Region))
+  
   # Create a stream graph with ggplot2 using scaled values
   ggplot(df_long, aes(x = Year, y = Value, fill = Region)) +
     geom_area(position = "stack") +
     labs(x = "Year", y = "Scaled Value") +
-    scale_fill_manual(values = scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region)))) +
+    scale_fill_manual(values = region_colors) + 
     theme_minimal() +
     theme(
       axis.text.x = element_text(margin = margin(b = 10)),
@@ -46,9 +49,10 @@ create_steam_graph <- function(selected_regions, data) {
     )
 }
 
+
 create_bubble_chart <- function(selected_regions, data, column_name) {
   column_name <- paste0("X", column_name)
-
+  
   generation_by_region <- data %>%
     filter(Features == "net generation") %>%
     select(Country, Region, column_name)
@@ -57,17 +61,17 @@ create_bubble_chart <- function(selected_regions, data, column_name) {
     group_by(Region) %>%
     filter(across({{ column_name }}, ~ . == max(.))) %>%
     ungroup()
-
+  
   consumption_by_country <- data %>%
     filter(Features == "net consumption") %>%
     filter(Country %in% max_production_by_region$Country) %>%
     select(!!sym(column_name))
-
+  
   capacity_by_country <- data %>%
     filter(Features == "installed capacity ") %>%
     filter(Country %in% max_production_by_region$Country) %>%
     select(!!sym(column_name))
-
+  
   new_df <- data.frame(
     Country = max_production_by_region$Country,
     Region = max_production_by_region$Region,
@@ -75,14 +79,17 @@ create_bubble_chart <- function(selected_regions, data, column_name) {
     Consumption = consumption_by_country[[column_name]],
     Capacity = capacity_by_country[[column_name]]
   )
-
+  
   new_df <- new_df %>%
     filter(Region %in% selected_regions)
   
+  region_colors <- setNames(scales::brewer_pal(palette = "Set3")(length(unique(new_df$Region))), unique(new_df$Region))
+  
   # Create the bubble chart
-  ggplot(new_df, aes(x = Generation, y = Consumption, size = Capacity)) +
-    geom_point(aes(color = Region), alpha = 0.7) +
-    scale_size_continuous(range = c(3, 15)) +  
+  ggplot(new_df, aes(x = Generation, y = Consumption, size = Capacity, fill = Region)) +
+    geom_point(alpha = 0.7, shape = 21) +
+    scale_size_continuous(range = c(3, 15)) +
+    scale_fill_manual(values = region_colors) +  # Use the specific colors assigned to each region
     labs(x = "Generation", y = "Consumption", size = "Capacity") +
     theme_minimal() +
     theme(

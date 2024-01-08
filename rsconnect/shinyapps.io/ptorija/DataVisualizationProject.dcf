@@ -5,7 +5,7 @@ account: ptorija
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10772846
-bundleId: 8095328
+bundleId: 8119582
 url: https://ptorija.shinyapps.io/DataVisualizationProject/
 version: 1
 asMultiple: FALSE
