@@ -18,7 +18,6 @@ create_map <- function(year, data) {
     )
 }
 
-
 create_steam_graph <- function(selected_regions, data) {
   # Group by region and get mean generation
   generation_by_region <- data %>%
@@ -26,9 +25,6 @@ create_steam_graph <- function(selected_regions, data) {
     select(-Country, -Features) %>%
     group_by(Region) %>%
     summarise(across(everything(), mean, na.rm = TRUE))
-  
-  # Display the result
-  print(generation_by_region)
   
   df_long <- generation_by_region %>%
     pivot_longer(cols = starts_with("X"), names_to = "Year", values_to = "Value") %>%

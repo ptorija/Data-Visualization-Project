@@ -42,63 +42,64 @@ source("scripts/charts_functions.R")
 # Load Data
 data <- read.csv("data/Global Electricity Statistics.csv", header = TRUE)
 
-ui <- fluidPage(
-  tags$head(
-    tags$style(HTML("
-      body {
-        background-color: #EBEBEB; 
-      }
-      .main-title {
-        text-align: center;
-        font-size: 45px;
-        font-weight: bold;
-        margin-bottom: 100px;
-        margin-top: 50px;
-        color: #2674D8;
-      }
-      .panels-group {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 100px;
-      }
-      "))
-  ),
-  div(class = "main-title", "Global Electricity Statistics"),
-  div(class = "panels-group",
-      sidebarPanel(
-        checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
-                           choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
-                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
-        width = 2.5
+ui <- navbarPage(
+  "Global Electricity Statistics",
+  tabPanel(
+    "About",
+    fluidPage(
+      div(
+        class = "main-title",
+        "About Global Electricity Statistics",
+        style = "text-align: center; font-size: 30px; font-weight: bold; margin-top: 50px; color: #2674D8;"
       ),
-      mainPanel(
-        plotOutput("steam", width = "100%"),
-        style = "margin-left: 50px;"
-      )
-  ),
-  div(class = "panels-group",
-      sidebarPanel(
-        selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
-        width = 2.5,
-        
+      div(
+        class = "about-content",
+        "This Shiny app presents visualizations of global electricity statistics from 1980 to 2021. Explore the evolution of electricity generation across regions, analyze the annual electricity consumption heatmap, and examine the relationships between generation, consumption, and capacity with the bubble chart.",
+        style = "font-size: 18px; margin-top: 30px; margin-bottom: 30px;"
       ),
-      mainPanel(
-        plotOutput("map", width = "100%"),
-        style = "margin-left: 50px;"
+      div(
+        class = "about-content",
+        "Developed using the Shiny package for R, this app provides an interactive interface for users to gain insights into key aspects of global electricity trends. Navigate through the tabs to access different visualizations and discover patterns in the data.",
+        style = "font-size: 18px; margin-bottom: 50px;"
       )
+    )
   ),
-  div(class = "panels-group",
-      sidebarPanel(
+  tabPanel(
+    "Steam Graph",
+    titlePanel(h3("Evolution of Electricity Generation Across Regions", style = "color: #2674D8; text-align: center; font-weight: bold;")),
+    splitLayout(
+      cellWidths = c("25%", "75%"),
+      checkboxGroupInput("steamRegionsSelector", "Select regions to display:",
+                         choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
+                         selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
+      plotOutput("steam", width = "100%"),
+      style = "margin-left: 50px;"
+    )
+  ),
+  tabPanel(
+    "World Map",
+    titlePanel(h3("Annual Electricity Consumption Heatmap", style = "color: #2674D8; text-align: center; font-weight: bold;")),
+    splitLayout(
+      cellWidths = c("25%", "75%"),
+      selectInput("mapYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
+      plotOutput("map", width = "100%"),
+      style = "margin-left: 50px;"
+    )
+  ),
+  tabPanel(
+    "Bubble Chart",
+    titlePanel(h3("Generation, Consumption, and Capacity by Region", style = "color: #2674D8; text-align: center; font-weight: bold;")),
+    splitLayout(
+      cellWidths = c("25%", "75%"),
+      div(
         selectInput("bubbleYearSelector", "Select a Year:", seq(1980, 2021), selected = 2021),
         checkboxGroupInput("bubbleRegionsSelector", "Select regions to display:",
                            choices = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"),
-                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East")),
-        width = 2.5,
+                           selected = c("Africa", "Asia & Oceania", "Europe", "Central & South America","North America", "Middle East"))
       ),
-      mainPanel(
-        plotOutput("bubble", width = "100%"),
-        style = "margin-left: 50px;"
-      )
+      plotOutput("bubble", width = "100%"),
+      style = "margin-left: 50px;"
+    )
   )
 )
 
