@@ -83,7 +83,7 @@ create_bubble_chart <- function(selected_regions, data, column_name) {
   new_df <- new_df %>%
     filter(Region %in% selected_regions)
   
-  region_colors <- setNames(scales::brewer_pal(palette = "Set3")(length(unique(new_df$Region))), unique(new_df$Region))
+  region_colors <- setNames(scales::brewer_pal(palette = "Set3")(length(unique(generation_by_region$Region))), unique(generation_by_region$Region))
   
   # Create the bubble chart
   ggplot(new_df, aes(x = Generation, y = Consumption, size = Capacity, fill = Region)) +
